@@ -106,37 +106,82 @@ ROS 2 representa un gran avance en el desarrollo de software robótico, abordand
 
 
 
-# 1- Install python
+# 1- Instalar python
 Python y el entorno Conda son herramientas ideales para trabajar con ROS 2 debido a su flexibilidad y facilidad de uso en entornos de desarrollo complejos. Python, como lenguaje interpretado, ofrece una sintaxis clara y una vasta cantidad de bibliotecas que facilitan el desarrollo de algoritmos para robótica. 
 
 
 Conda permite gestionar entornos virtuales de forma eficiente, lo que resulta crucial para ROS 2, ya que sus dependencias pueden variar entre proyectos y sistemas operativos. Al combinar ambos, se logra un entorno controlado que minimiza conflictos de versiones y facilita la instalación de paquetes específicos necesarios para el desarrollo y la simulación en robótica. Esto no solo optimiza el flujo de trabajo, sino que también garantiza una mayor estabilidad y reproducibilidad en los proyectos.
 
 
-### 2- Install ROS2
-Install ROS2 humble and have it running. Here are some options depending in the OS. 
-- **Ubuntu Jammy 22.04 LTS** from debian ource. [ros2 docs install tutorial](https://docs.ros.org/en/humble/Installation/Ubuntu-Install-Debs.html)
-- **MacOS**: Use mamba and _robostack_ for installing the binaries for ros-humble. [robostack tutorial](https://robostack.github.io/GettingStarted.html)
-- **Windows**: Use WSL for using a Linux Kernel and install ros as in Ubuntu OS . [here](https://learn.microsoft.com/es-es/windows/wsl/install)
+# 2- Instalar ROS2
+Instalar ROS2 humble y tenerlo para su ejecución. Aquí hay unas opciones dependiendo del sistema operativo. 
 
-> Rember to source the ros workspace
+## Windows
+### Opción 1
+Instalar **WSL (Window Subsystem for Linux)** para utilizar un kernel de Linux y luego seguir los pasos para la instalación de ROS en Ubuntu: [Guía de instalación en WSL.](https://learn.microsoft.com/es-es/windows/wsl/install)
+### Opción 2
+Instalar Miniforge de acuerdo a la [guía](https://github.com/conda-forge/miniforge/blob/main/README.md). Una vez instalado seguir la guía de Robostack para realizar la instalación de ros2 haciendo uso de mamba y conda como gestores de paquetes. [tutorial robostack](https://robostack.github.io/GettingStarted.html)
+En caso de presentar fallos a partir de la línea  ```bash
+conda config --env --add channels conda-forge```
+realizar los siguientes pasos: 
+1. Preparar el sistema para usar los canales correctos
+ 
+```sh
+conda create -n humble python=3.11
+conda activate humble
+```
+2. Verificar que se encuentre dentro del ambiente instalado mamba y conda con el siguiente comando
+```sh
+conda --version
+mamba --version
+```
+De ser exitoso pasar al paso 3 sino seguir con el paso 2.1
 
-### Workspace config
-Clone this repo and configure the workspace.
+2.1 Realizar la instalación de conda usando mamba
+```sh
+mamba install conda 
+```
+
+3. Configurar los canales en el ambiente
+
+```sh
+conda config --env --add channels conda-forge
+conda config --env --add channels robostack-staging
+conda config --env -aa channels robostack-jazzy
+conda config --env --remove channels defaults
+```
+
+4. Instalar ros2 dentro del ambiente
+
 ```bash
+mamba install ros-humble-desktop
+```
+
+## Ubuntu
+Seguir los pasos indicados en la guía oficial [Instalación en Ubuntu](https://docs.ros.org/en/humble/Installation/Ubuntu-Install-Debs.html)
+*Nota:* Se puede optar por usar una máquina virtual o hacer una partición en el disco duro, dependiendo de la capacidad y los recursos disponibles en sus computadores.
+
+## MacOS
+Usar **mamba** y **robostack** para instalar los binarios de ROS2 Humble. Se puede seguir el [tutorial de robostack](https://robostack.github.io/GettingStarted.html)
+
+### Configuración del espacio de trabajo
+Clonar este repo y configurar el espacio de trabajo.
+
+```sh
 mkdir phantom_ws && cd phantom_ws
 mkdir src && cd src
 git clone https://github.com/labsir-un/phantomx-driver.git
 cd ..
 ```
-build and source the project 
+
+Crear el código fuente
 ```bash
 colcon build --symlink-install && source install/setup.bash
 ```
 
-Con esto terminamos la primera session!
+Con esto se termina la primera session!
 
-## Additional tool recomended
+## Herramientas adicionales recomendadas
 - **VScode**
-- **Iterm** Other terminal aplicattion
-- **Arc** Browser for mac.
+- **Iterm** Aplicación para crear múltiples terminales
+- **Arc** Navegador para mac.
